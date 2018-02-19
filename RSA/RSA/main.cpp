@@ -4,7 +4,7 @@
 #include<stdlib.h>
 using namespace std;
 
-bool prime(long int pr)
+bool prime(unsigned int pr)
 {
 
 	int i;
@@ -18,7 +18,7 @@ bool prime(long int pr)
 }
 
 
-int chekInput(long int &number)
+int chekInput(unsigned int &number)
 {
 	prime(number);
 	while (prime(number) == false)
@@ -32,7 +32,7 @@ int chekInput(long int &number)
 
 }
 
-long gcdEuclid(long  b, long a)
+unsigned int gcdEuclid(int b, int a)
 {
 
 	while (a != b)
@@ -47,10 +47,10 @@ long gcdEuclid(long  b, long a)
 	}
 	return a;
 }
-long createClosedKey(long n)
+unsigned int createClosedKey(unsigned int n)
 {
-	long d = n - 1;
-	for (long i = 2; i <= n; i++)
+	unsigned int d = n - 1;
+	for (unsigned int i = 2; i <= n; i++)
 		if ((n % i == 0) && (d % i == 0)) //если имеют общие делители
 		{
 			d--;
@@ -60,9 +60,9 @@ long createClosedKey(long n)
 	return d;
 
 }
-long createOpendKey(long int eulerFunc, long int p, long int q, long int d)
+unsigned int createOpendKey(unsigned int eulerFunc, unsigned int p, unsigned int q, unsigned int d)
 {
-	long e = eulerFunc / 2;
+	unsigned int e = eulerFunc / 2;
 
 	while (e < (eulerFunc))
 	{
@@ -80,15 +80,50 @@ long createOpendKey(long int eulerFunc, long int p, long int q, long int d)
 
 	return e;
 }
+
+unsigned int Power(unsigned int  value, unsigned int pow)
+{
+	int result = 1;
+	while (pow > 0)
+	{
+		if (pow % 2 == 1)
+		{
+			result *= value;
+
+		}
+		value *= value;
+		pow /= 2;
+	}
+	return result;
+}
+// Ў»‘–”≈ћ ќ“ –џ“џћ  Ћё„ќћ
+unsigned int  encript(unsigned int mass, unsigned int e, unsigned int N)
+{
+
+	/*for (int i = 0; i < sizeof(mass); i++)
+	{*/
+	
+		mass =(Power(mass,e)% N);
+		//temp>>=1;
+		cout << mass << endl;
+	return mass;
+}
+unsigned int decript(unsigned int mass, unsigned int d, unsigned int N)
+{
+	mass = (Power(mass, d) % N);
+	//temp>>=1;
+	cout << mass << endl;
+	return mass;
+}
 int main()
 {
-	long int p;// первое простое число
-	long int q;// второе простое число
-	long int n;// n=p*q
-	long int eulerFunc;// верхн€€ граница
-	long int d;
-	long int e = 2;// открыта€ экспонента должны соблюдатьс€ услови€ 1). e<eulerFunc  и 2) gcd(e,eulerFunc)==1
-	char msg[100];
+	unsigned int p;// первое простое число
+	unsigned int q;// второе простое число
+	unsigned int n;// n=p*q
+	unsigned int eulerFunc;// верхн€€ граница
+	unsigned int d;
+	unsigned int e = 2;// открыта€ экспонента должны соблюдатьс€ услови€ 1). e<eulerFunc  и 2) gcd(e,eulerFunc)==1
+
 	char ch = '0';
 
 	do {
@@ -118,7 +153,22 @@ int main()
 		cout << "OPEN  KEY " << e << endl;
 
 		cout << "ENTER MESSAGE" << endl;
+		char msg[100];
+		int mass[100];
 		cin >> msg;
+
+	
+		for (unsigned int i = 0; msg[i] != NULL; i++) {
+
+			mass[i] = (unsigned int)msg[i];
+
+			encript(mass[i],e, n);
+		}
+		for (int i = 0; msg[i] != NULL; i++) {
+
+
+			decript(mass[i], d, n);
+		}
 	} while (ch != 27);
 
 	return 0;
