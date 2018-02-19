@@ -35,27 +35,27 @@ int chekInput(unsigned int &number)
 unsigned int gcdEuclid(int b, int a)
 {
 
-	while (a != b)
+	int c;
+	while (b)
 	{
-		if (a > b)
-		{
-			long tmp = a;
-			a = b;
-			b = tmp;
-		}
-		b = b - a;
+		c = a % b;
+		a = b;
+		b = c;
 	}
-	return a;
+	return abs(a);
 }
 unsigned int createClosedKey(unsigned int n)
 {
-	unsigned int d = n - 1;
-	for (unsigned int i = 2; i <= n; i++)
-		if ((n % i == 0) && (d % i == 0)) //если имеют общие делители
-		{
-			d--;
-			i = 1;
-		}
+	unsigned int d = n/2;
+	gcdEuclid(d, n);
+	while (gcdEuclid(d, n) != 1) {
+		d--;
+	}
+		//if ((n % i == 0) && (d % i == 0)) //если имеют общие делители
+		//{
+		//	d--;
+		//	i = 1;
+		//}
 
 	return d;
 
