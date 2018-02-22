@@ -1,10 +1,10 @@
-#include<iostream>
+Ôªø#include<iostream>
 #include<math.h>
 #include<string.h>
 #include<stdlib.h>
 using namespace std;
 
-bool prime(unsigned int pr)
+bool prime(unsigned long long  pr)
 {
 
 	int i;
@@ -18,12 +18,12 @@ bool prime(unsigned int pr)
 }
 
 
-int chekInput(unsigned int &number)
+unsigned long long chekInput(unsigned long long number)
 {
 	prime(number);
 	while (prime(number) == false)
 	{
-		cout << "WONG NUMBER" << endl;
+		cout << "WRONG NUMBER" << endl;
 		cout << "ENTER PRIME NUMBER" << endl;;
 		cin >> number;
 		prime(number);
@@ -32,97 +32,81 @@ int chekInput(unsigned int &number)
 
 }
 
-unsigned int gcdEuclid(int b, int a)
+unsigned long long  gcdEuclid(unsigned long long b, unsigned  long long a)
 {
 
-	while (a != b)
+	unsigned long long  c;
+	while (b)
 	{
-		if (a > b)
-		{
-			long tmp = a;
-			a = b;
-			b = tmp;
-		}
-		b = b - a;
+		c = a % b;
+		a = b;
+		b = c;
 	}
 	return a;
 }
-unsigned int createClosedKey(unsigned int n)
+unsigned long long createClosedKey(unsigned long long n, unsigned long long e, unsigned long long EF)
 {
-	unsigned int d = n - 1;
-	for (unsigned int i = 2; i <= n; i++)
-		if ((n % i == 0) && (d % i == 0)) //ÂÒÎË ËÏÂ˛Ú Ó·˘ËÂ ‰ÂÎËÚÂÎË
-		{
-			d--;
-			i = 1;
-		}
+	unsigned long long d, d_simple;
+	d = 0;
+	d_simple = 0;
+	while (d_simple != 1) {
+		d = rand() % EF + 3;
+		d_simple = (e * d) % n;
+	}
+
+
 
 	return d;
-
 }
-unsigned int createOpendKey(unsigned int eulerFunc, unsigned int p, unsigned int q, unsigned int d)
+unsigned long long  createOpendKey(unsigned long long eulerFunc)
 {
-	unsigned int e = eulerFunc / 2;
-
-	while (e < (eulerFunc))
-	{
-		if ((gcdEuclid(eulerFunc, e) == 1) && (e != p) && (e != q))
-		{
-			if ((prime(e) == true))
-			{
-				if ((e * d) % eulerFunc == 1)
-					cout << e << endl;
-				break;
-			}
-		}
-		e--;
+	unsigned long long  e = rand() % (eulerFunc / 2) + 3;
+	gcdEuclid(e, eulerFunc);
+	while (gcdEuclid(e, eulerFunc) != 1) {
+		e++;
 	}
-
 	return e;
+
 }
 
-unsigned int Power(unsigned int  value, unsigned int pow)
-{
-	int result = 1;
-	while (pow > 0)
-	{
-		if (pow % 2 == 1)
-		{
-			result *= value;
+unsigned long long modPow(unsigned long long base, unsigned long long exponent, unsigned long long mod);
 
-		}
-		value *= value;
-		pow /= 2;
+// –®–ò–§–†–£–ï–ú –û–¢–ö–†–´–¢–´–ú –ö–õ–Æ–ß–û–ú
+unsigned long long encript(unsigned long long mass, unsigned long long e, unsigned long long N)
+{
+	return modPow(mass, e, N);
+}
+
+
+unsigned long long modPow(unsigned long long base, unsigned long long exponent, unsigned long long mod) {
+	base %= mod;
+	unsigned long long pow;
+	if (exponent == 0) {
+		pow = 1;
 	}
-	return result;
+	else if (exponent % 2 == 0) {
+		pow = modPow(base * base, exponent / 2, mod) % mod;
+	}
+	else {
+		pow = (base * modPow(base, exponent - 1, mod)) % mod;
+	}
+	return pow;
 }
-// ÿ»‘–”≈Ã Œ“ –€“€Ã  Àﬁ◊ŒÃ
-unsigned int  encript(unsigned int mass, unsigned int e, unsigned int N)
+unsigned long long decript(unsigned long long mass, unsigned long   long d, unsigned long long N)
 {
+	//  mass = pow(mass, d);
+	return modPow(mass, d, N);
+	//  fmod(mass, N);
 
-	/*for (int i = 0; i < sizeof(mass); i++)
-	{*/
-	
-		mass =(Power(mass,e)% N);
-		//temp>>=1;
-		cout << mass << endl;
-	return mass;
-}
-unsigned int decript(unsigned int mass, unsigned int d, unsigned int N)
-{
-	mass = (Power(mass, d) % N);
-	//temp>>=1;
-	cout << mass << endl;
-	return mass;
 }
 int main()
 {
-	unsigned int p;// ÔÂ‚ÓÂ ÔÓÒÚÓÂ ˜ËÒÎÓ
-	unsigned int q;// ‚ÚÓÓÂ ÔÓÒÚÓÂ ˜ËÒÎÓ
-	unsigned int n;// n=p*q
-	unsigned int eulerFunc;// ‚ÂıÌˇˇ „‡ÌËˆ‡
-	unsigned int d;
-	unsigned int e = 2;// ÓÚÍ˚Ú‡ˇ ˝ÍÒÔÓÌÂÌÚ‡ ‰ÓÎÊÌ˚ ÒÓ·Î˛‰‡Ú¸Òˇ ÛÒÎÓ‚Ëˇ 1). e<eulerFunc  Ë 2) gcd(e,eulerFunc)==1
+	unsigned long long p;// –ø–µ—Ä–≤–æ–µ –ø—Ä–æ—Å—Ç–æ–µ —á–∏—Å–ª–æ
+	unsigned long  long q;// –≤—Ç–æ—Ä–æ–µ –ø—Ä–æ—Å—Ç–æ–µ —á–∏—Å–ª–æ
+	unsigned long long  n;// n=p*q
+	unsigned  long long eulerFunc;// –≤–µ—Ä—Ö–Ω—è—è –≥—Ä–∞–Ω–∏—Ü–∞
+	unsigned long long d;
+	unsigned long long e;// –æ—Ç–∫—Ä—ã—Ç–∞—è —ç–∫—Å–ø–æ–Ω–µ–Ω—Ç–∞ –¥–æ–ª–∂–Ω—ã —Å–æ–±–ª—é–¥–∞—Ç—å—Å—è —É—Å–ª–æ–≤–∏—è 1). e<eulerFunc  –∏ 2) gcd(e,eulerFunc)==1
 
 	char ch = '0';
 
@@ -147,27 +131,34 @@ int main()
 		chekInput(q);
 		n = p * q;
 		eulerFunc = (p - 1)*(q - 1);
-		d = createClosedKey(eulerFunc);
-		cout << "ClOSED KEY " << d << endl;
-		e = createOpendKey(eulerFunc, p, q, d);
-		cout << "OPEN  KEY " << e << endl;
 
+		e = createOpendKey(eulerFunc);
+		cout << "OPEN  KEY " << e << endl;
+		d = createClosedKey(eulerFunc, e, eulerFunc);
+		cout << "ClOSED KEY " << d << endl;
 		cout << "ENTER MESSAGE" << endl;
 		char msg[100];
-		int mass[100];
+		unsigned   long long  mass[100];
 		cin >> msg;
+		for (int i = 0; msg[i] != NULL; i++)
+		{
+			mass[i] = (unsigned long long) msg[i];
+			cout << mass[i] << endl;
 
-	
-		for (unsigned int i = 0; msg[i] != NULL; i++) {
-
-			mass[i] = (unsigned int)msg[i];
-
-			encript(mass[i],e, n);
 		}
-		for (int i = 0; msg[i] != NULL; i++) {
+		cout << "\n\n\n";
+		for (int i = 0; msg[i] != NULL; i++)
+		{
+			mass[i] = encript(mass[i], e, n);
+			cout << mass[i] << endl;
+		}
+		cout << "\n\n\n";
 
+		for (int i = 0; msg[i] != NULL; i++)
+		{
 
-			decript(mass[i], d, n);
+			mass[i] = decript(mass[i], d, n);
+			cout << mass[i] << endl;
 		}
 	} while (ch != 27);
 
