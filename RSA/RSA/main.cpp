@@ -23,7 +23,7 @@ unsigned long long chekInput(unsigned long long number)
 	prime(number);
 	while (prime(number) == false)
 	{
-		cout << "WONG NUMBER" << endl;
+		cout << "WRONG NUMBER" << endl;
 		cout << "ENTER PRIME NUMBER" << endl;;
 		cin >> number;
 		prime(number);
